@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { addBook } from "../redux/booksSlice";
+import { addBook } from "../features/books/booksSlice";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
