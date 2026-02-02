@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import BrowseBooks from "./pages/BrowseBooks";
@@ -6,10 +6,13 @@ import BookDetails from "./pages/BookDetails";
 import AddBook from "./pages/AddBook";
 import NotFound from "./pages/NotFound";
 
-function App() {
+function Layout() {
+  const location = useLocation();
+  const hideNavbar = location.pathname === "*";
+
   return (
-    <BrowserRouter>
-      <Navbar />
+    <>
+      {!location.pathname.includes("not-found") && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/books" element={<BrowseBooks />} />
@@ -18,7 +21,14 @@ function App() {
         <Route path="/add-book" element={<AddBook />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Layout />
     </BrowserRouter>
   );
 }
-export default App;

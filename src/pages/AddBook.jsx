@@ -1,26 +1,46 @@
 import { useDispatch } from "react-redux";
+import { addBook } from "../redux/booksSlice";
 import { useNavigate } from "react-router-dom";
-import { addBook } from "../features/books/booksSlice";
 import { useState } from "react";
 
 export default function AddBook() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [form, setForm] = useState({title:"",author:"",category:"",description:"",rating:""});
 
-  const submit = e => {
+  const [form, setForm] = useState({
+    title: "",
+    author: "",
+    category: "",
+    rating: "",
+    description: "",
+  });
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if(Object.values(form).some(v=>!v)) return alert("All fields required");
-    dispatch(addBook({...form, id: Date.now()}));
+    if (Object.values(form).some((v) => v === "")) {
+      alert("All fields are required!");
+      return;
+    }
+
+    dispatch(addBook({ id: Date.now(), ...form, rating: Number(form.rating) }));
     navigate("/books");
   };
 
   return (
-    <form onSubmit={submit}>
-      {Object.keys(form).map(k=>(
-        <input key={k} placeholder={k} value={form[k]} onChange={e=>setForm({...form,[k]:e.target.value})}/>
-      ))}
-      <button>Add Book</button>
-    </form>
+    <div className="container">
+      <h1>Add a New Book</h1>
+      <form onSubmit={handleSubmit}>
+        {Object.keys(form).map((field) => (
+          <input
+            key={field}
+            type="text"
+            placeholder={field}
+            value={form[field]}
+            onChange={(e) => setForm({ ...form, [field]: e.target.value })}
+          />
+        ))}
+        <button type="submit">Add Book</button>
+      </form>
+    </div>
   );
 }

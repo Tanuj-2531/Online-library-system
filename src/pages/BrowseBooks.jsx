@@ -5,19 +5,31 @@ import BookCard from "../components/BookCard";
 
 export default function BrowseBooks() {
   const { category } = useParams();
-  const books = useSelector(s => s.books);
+  const books = useSelector((state) => state.books);
   const [search, setSearch] = useState("");
 
-  const filtered = books.filter(b =>
-    (!category || b.category === category) &&
-    (b.title.toLowerCase().includes(search.toLowerCase()) ||
-     b.author.toLowerCase().includes(search.toLowerCase()))
-  );
+  const filteredBooks = books.filter((book) => {
+    const matchesCategory = category ? book.category === category : true;
+    const matchesSearch =
+      book.title.toLowerCase().includes(search.toLowerCase()) ||
+      book.author.toLowerCase().includes(search.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   return (
-    <div>
-      <input placeholder="Search" onChange={e=>setSearch(e.target.value)}/>
-      {filtered.map(b => <BookCard key={b.id} book={b}/>)}
+    <div className="container">
+      <h1>Browse Books {category && `- ${category}`}</h1>
+
+      <input
+        type="text"
+        placeholder="Search by title or author..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      {filteredBooks.map((book) => (
+        <BookCard key={book.id} book={book} />
+      ))}
     </div>
   );
 }

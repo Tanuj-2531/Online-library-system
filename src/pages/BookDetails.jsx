@@ -3,15 +3,18 @@ import { useSelector } from "react-redux";
 
 export default function BookDetails() {
   const { id } = useParams();
-  const book = useSelector(s => s.books.find(b => b.id === Number(id)));
-  if (!book) return <p>Not found</p>;
+  const books = useSelector((state) => state.books);
+  const book = books.find((b) => b.id === parseInt(id));
+
+  if (!book) return <h2>Book not found</h2>;
+
   return (
-    <div>
+    <div className="container">
       <h1>{book.title}</h1>
-      <p>{book.author}</p>
+      <p><strong>Author:</strong> {book.author}</p>
+      <p><strong>Rating:</strong> {book.rating}</p>
       <p>{book.description}</p>
-      <p>Rating: {book.rating}</p>
-      <Link to="/books">Back</Link>
+      <Link to="/books">⬅ Back to Browse</Link>
     </div>
   );
 }

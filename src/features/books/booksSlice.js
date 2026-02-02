@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import booksData from "../../data/booksData";
+import booksData from "../data/booksData";
 
 const booksSlice = createSlice({
   name: "books",
-  initialState: booksData,
+  initialState: booksData, // 👈 using dummy data file
   reducers: {
-    addBook: (state, action) => { state.unshift(action.payload); },
+    addBook: (state, action) => {
+      state.unshift(action.payload); // new books appear at top
+    },
   },
 });
 
